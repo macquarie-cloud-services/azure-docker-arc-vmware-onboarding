@@ -4,8 +4,8 @@ ENV POWERCLI_VERSION 12.3.0.17860403
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
-MKDIR C:\arc-onboarding
-CD C:\arc-onboarding
+RUN mkdir C:\arc-onboarding \
+  && cd C:\arc-onboarding
 
 RUN `
   Function Test-Nano() { `
