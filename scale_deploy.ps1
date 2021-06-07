@@ -1,5 +1,5 @@
 # Define Variables
-# Connet to VMware vCenter
+# Connect to VMware vCenter
 Invoke-Expression ".\vars.ps1"
 Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false
 Connect-VIServer -Server $env:vCenterAddress -User $env:vCenterUser -Password $env:vCenterUserPassword -Force # vars are defined in vars.ps1
