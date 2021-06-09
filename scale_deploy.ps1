@@ -47,14 +47,14 @@ ForEach ($VMName in $VMs) {
 
   # Onboarding VM to Azure Arc
   $Command = $DstPath + $File1
-  Write-Host "Hold tight, I am onboarding $VMName Virtual Machine to Azure Arc..." -ForegroundColor Cyan 
+  Write-Output "`nOnboarding $VMName Virtual Machine to Azure Arc..." -ForegroundColor Cyan 
   $Result = Invoke-VMScript -VM $VM -ScriptText $Command -GuestUser $OSAdmin -GuestPassword $OSPassword
   $ExitCode = $Result.ExitCode
   if ($ExitCode = "0") {
-    Write-Host $VMName is now successfully onboarded to Azure Arc -ForegroundColor Green
+    Write-Output $VMName is now successfully onboarded to Azure Arc -ForegroundColor Green
   }
   Else {
-    Write-Host $VMName returned exit code $ExitCode -ForegroundColor Red
+    Write-Output $VMName returned exit code $ExitCode -ForegroundColor Red
   }
   $Delete = Invoke-VMScript -VM $VM -ScriptText "Remove-Item -Force -Recurse -Path $DstPath" -GuestUser $OSAdmin -GuestPassword $OSPassword
 }
