@@ -5,9 +5,9 @@ SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPref
 RUN mkdir "C:\arcOnboarding" ; \
   cd "C:\arcOnboarding"
 
-RUN wget -URI https://raw.githubusercontent.com/macquarie-cloud-services/azure-docker-arc-vmware-onboarding/main/scale_deploy.ps1 -UseBasicParsing -O "C:\arcOnboarding\scale_deploy.ps1"
+RUN wget -URI https://raw.githubusercontent.com/macquarie-cloud-services/azure-docker-arc-vmware-onboarding/main/scale_deploy.ps1 -UseBasicParsing -O scale_deploy.ps1
 
-RUN wget -URI https://raw.githubusercontent.com/macquarie-cloud-services/azure-docker-arc-vmware-onboarding/main/install_arc_agent.ps1 -UseBasicParsing -O "C:\arcOnboarding\install_arc_agent.ps1"
+RUN wget -URI https://raw.githubusercontent.com/macquarie-cloud-services/azure-docker-arc-vmware-onboarding/main/install_arc_agent.ps1 -UseBasicParsing -O install_arc_agent.ps1
 
 RUN Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.208 -Force ; \
   Install-Module -Name VMware.PowerCLI -RequiredVersion $env:POWERCLI_VERSION -Force ; \
