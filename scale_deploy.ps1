@@ -39,7 +39,7 @@ ForEach ($VMName in $VMs) {
   $DstPath = "C:\arctemp\"
   $Fullpath1 = $srcPath + $File1
 
-  Copy-VMGuestFile -VM $VM -Source $Fullpath1 -Destination $DstPath -LocalToGuest -GuestUser $OSAdmin -GuestPassword $OSPassword -Force
+  Copy-VMGuestFile -VM $VM -Source ".\install_arc_agent.ps1" -Destination $DstPath -LocalToGuest -GuestUser $OSAdmin -GuestPassword $OSPassword -Force
 
   # Onboarding VM to Azure Arc
   $Command = $DstPath + $File1 + " -servicePrincipalClientId $servicePrincipalClientId -servicePrincipalSecret $servicePrincipalSecret -resourceGroup $resourceGroup -tenantId $tenantId -location $location -subscriptionId $subscriptionId"
