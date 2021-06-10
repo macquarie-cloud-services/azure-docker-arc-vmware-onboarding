@@ -18,8 +18,6 @@ param(
     [Parameter(Mandatory = $true)]
     [string] $vCenterPassword,
     [Parameter(Mandatory = $true)]
-    [string] $srcPath,
-    [Parameter(Mandatory = $true)]
     [string] $VMFolder,
     [Parameter(Mandatory = $true)]
     [string] $OSAdmin,
@@ -37,16 +35,14 @@ ForEach ($VMName in $VMs) {
 
   # Define scripts information
   $File1 = "install_arc_agent.ps1"
-  $File2 = "vars.ps1" 
+  $srcPath = "C:\arc-onboarding\"
   $DstPath = "C:\arctemp\"
-  $Fullpath1 = $SrcPath + $File1 # SrcPath is defined in vars.ps1
-  $Fullpath2 = $SrcPath + $File2 # SrcPath is defined in vars.ps1
+  $Fullpath1 = $srcPath + $File1
 
   Copy-VMGuestFile -VM $VM -Source $Fullpath1 -Destination $DstPath -LocalToGuest -GuestUser $OSAdmin -GuestPassword $OSPassword -Force
-  Copy-VMGuestFile -VM $VM -Source $Fullpath2 -Destination $DstPath -LocalToGuest -GuestUser $OSAdmin -GuestPassword $OSPassword -Force
 
   # Onboarding VM to Azure Arc
-  $Command = $DstPath + $File1
+  $Command = $DstPath + $File1 + " -servicePrincipalClientId $servicePrincipalClientId -servicePrincipalSecret $servicePrincipalSecret -resourceGroup $resourceGroup -tenantId $tenantId -location $location -subscriptionId $subscriptionId"
   Write-Output "`nOnboarding $VMName Virtual Machine to Azure Arc..." -ForegroundColor Cyan 
   $Result = Invoke-VMScript -VM $VM -ScriptText $Command -GuestUser $OSAdmin -GuestPassword $OSPassword
   $ExitCode = $Result.ExitCode
