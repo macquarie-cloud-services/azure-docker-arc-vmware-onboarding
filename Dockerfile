@@ -2,8 +2,7 @@ FROM mcr.microsoft.com/windows/servercore:ltsc2019
 ENV POWERCLI_VERSION 12.3.0.17860403
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
-RUN mkdir "C:\arcOnboarding" ; \
-  cd "C:\arcOnboarding"
+WORKDIR "C:\arcOnboarding"
 
 RUN wget -URI https://raw.githubusercontent.com/macquarie-cloud-services/azure-docker-arc-vmware-onboarding/main/scale_deploy.ps1 -UseBasicParsing -O scale_deploy.ps1
 
