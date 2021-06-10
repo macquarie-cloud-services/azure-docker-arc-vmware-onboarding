@@ -27,15 +27,15 @@ param(
 
 # Connect to VMware vCenter
 Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false
-Connect-VIServer -Server $vCenterAddress -User $vCenterUser -Password $vCenterPassword -Force # vars are defined in vars.ps1
-$VMs = Get-Folder -Name $VMFolder | Get-VM # VMFolder is defined in vars.ps1
+Connect-VIServer -Server $vCenterAddress -User $vCenterUser -Password $vCenterPassword -Force
+$VMs = Get-Folder -Name $VMFolder | Get-VM
 
 ForEach ($VMName in $VMs) {
   $VM = Get-VM $VMName
 
   # Define scripts information
   $File1 = "install_arc_agent.ps1"
-  $srcPath = "C:\arc-onboarding\"
+  $srcPath = "C:\arcOnboarding\"
   $DstPath = "C:\arctemp\"
   $Fullpath1 = $srcPath + $File1
 
