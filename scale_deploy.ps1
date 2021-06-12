@@ -30,13 +30,13 @@ $srcPath = "C:\arcOnboarding\"
 Set-Content -Path .\vars.sh -Value{
 #!/bin/sh
 # Azure vars
-export subscription_id='$subscriptionId'
-export client_id='$servicePrincipalClientId'
-export client_secret='$servicePrincipalSecret'
-export tenant_id='$tenantId'
-export resourceGroup='$resourceGroup'
-export location='$location'
 }
+Add-Content -Path .\vars.sh -Value "export subscription_id=$subscriptionId"
+Add-Content -Path .\vars.sh -Value "export client_id=$servicePrincipalClientId"
+Add-Content -Path .\vars.sh -Value "export client_secret=$servicePrincipalSecret"
+Add-Content -Path .\vars.sh -Value "export tenant_id=$tenantId"
+Add-Content -Path .\vars.sh -Value "export resourceGroup=$resourceGroup"
+Add-Content -Path .\vars.sh -Value "export location=$location"
 
 # Connect to VMware vCenter
 Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false
