@@ -26,6 +26,17 @@ param(
 )
 
 $srcPath = "C:\arcOnboarding\"
+# Create vars.sh filefor Linux VMs
+Set-Content -Path .\vars.sh -Value{
+#!/bin/sh
+# Azure vars
+export subscription_id='$subscriptionId'
+export client_id='$servicePrincipalClientId'
+export client_secret='$servicePrincipalSecret'
+export tenant_id='$tenantId'
+export resourceGroup='$resourceGroup'
+export location='$location'
+}
 
 # Connect to VMware vCenter
 Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false
@@ -35,6 +46,7 @@ $VMs = Get-Folder -Name $VMFolder | Get-VM
 ForEach ($VMName in $VMs) {
   $VM = Get-VM $VMName
   If ($VM.GuestId -match "windows") {
+    Write-Output "`nWindows VM $VMName found..."
     # Define scripts information
     $File1 = "install_arc_agent.ps1"
     $DstPath = "C:\arctemp\"
@@ -56,44 +68,12 @@ ForEach ($VMName in $VMs) {
     $Delete = Invoke-VMScript -VM $VM -ScriptText "Remove-Item -Force -Recurse -Path $DstPath" -GuestUser $OSAdmin -GuestPassword $OSPassword
   }
   Else {
-    # Create vars.sh file with customer subscriptions paramaters to be read by onboarding script
-    Set-Content -Path .\vars.sh -Value{
-#!/bin/sh
-# Azure vars
-export subscription_id='$subscriptionId'
-export client_id='$servicePrincipalClientId'
-export client_secret='$servicePrincipalSecret'
-export tenant_id='$tenantId'
-export resourceGroup='$resourceGroup'
-export location='$location'
-}
-
-    $File1 = "vars.sh"
-    $sCopy1 = @{
-        Source = $srcPath + $File1
-        Destination = "/tmp/arctemp/"
-        VM = $VM
-        LocalToGuest = $true
-        GuestUser = "$OSAdmin"
-        GuestPassword = "$OSPassword" 
-        Verbose = $false
-    }
-  
-    $File2 = "install_arc_agent.sh"
-    $sCopy2 = @{
-        Source = $srcPath + $File2
-        Destination = "/tmp/arctemp/"
-        VM = $VM
-        LocalToGuest = $true
-        GuestUser = "$OSAdmin"
-        GuestPassword = "$OSPassword"
-        Verbose = $false
-    }
+    Write-Output "`nLinux VM $VMName found..."
 
     # Onboarding VM to Azure Arc
     Write-Output "`nOnboarding $VMName Virtual Machine to Azure Arc..."
-    Copy-VMGuestFile @sCopy1 -Force
-    Copy-VMGuestFile @sCopy2 -Force
+    Copy-VMGuestFile -VM $VM -Source ".\vars.sh" -Destination "/tmp/arctemp/" -LocalToGuest -GuestUser $OSAdmin -GuestPassword $OSPassword -Force
+    Copy-VMGuestFile -VM $VM -Source ".\install_arc_agent.sh" -Destination "/tmp/arctemp/" -LocalToGuest -GuestUser $OSAdmin -GuestPassword $OSPassword -Force
     $Result = Invoke-VMScript -VM $VM -ScriptText "sudo bash /tmp/arctemp/install_arc_agent.sh" -GuestUser $OSAdmin -GuestPassword $OSPassword
     $ExitCode = $Result.ExitCode
     if ($ExitCode = "0") {
