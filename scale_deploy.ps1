@@ -71,7 +71,6 @@ ForEach ($VMName in $VMs) {
     Write-Output "`nLinux VM $VMName found..."
     # Onboarding VM to Azure Arc
     Write-Output "`nOnboarding $VMName Virtual Machine to Azure Arc..."
-    Invoke-VMScript -VM $VM -ScriptText "mkdir /tmp/arctemp" -GuestUser $OSAdmin -GuestPassword $OSPassword
     Copy-VMGuestFile -VM $VM -Source ".\vars.sh" -Destination "/tmp/arctemp/" -LocalToGuest -GuestUser $OSAdmin -GuestPassword $OSPassword -Force
     Copy-VMGuestFile -VM $VM -Source ".\install_arc_agent.sh" -Destination "/tmp/arctemp/" -LocalToGuest -GuestUser $OSAdmin -GuestPassword $OSPassword -Force
     $Result = Invoke-VMScript -VM $VM -ScriptText "sudo bash /tmp/arctemp/install_arc_agent.sh" -GuestUser $OSAdmin -GuestPassword $OSPassword
