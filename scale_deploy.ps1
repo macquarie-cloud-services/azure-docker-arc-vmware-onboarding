@@ -80,6 +80,6 @@ ForEach ($VMName in $VMs) {
     }
 
     # Cleaning garbage
-    #$Delete = Invoke-VMScript -VM $VM -ScriptText "rm -rf /tmp/arctemp/" -GuestUser $OSAdmin -GuestPassword $OSPassword
+    $Delete = Invoke-VMScript -VM $VM -ScriptText "rm -rf /tmp/arctemp/" -GuestUser $OSAdmin -GuestPassword $OSPassword
   }
 }
