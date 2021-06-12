@@ -60,10 +60,10 @@ ForEach ($VMName in $VMs) {
     $Result = Invoke-VMScript -VM $VM -ScriptText $Command -GuestUser $OSAdmin -GuestPassword $OSPassword
     $ExitCode = $Result.ExitCode
     if ($ExitCode = "0") {
-    Write-Output "$VMName is now successfully onboarded to Azure Arc"
+        Write-Output "$VMName is now successfully onboarded to Azure Arc"
     }
     Else {
-    Write-Output "$VMName returned exit code $ExitCode"
+        Write-Output "$VMName returned exit code $ExitCode"
     }
     $Delete = Invoke-VMScript -VM $VM -ScriptText "Remove-Item -Force -Recurse -Path $DstPath" -GuestUser $OSAdmin -GuestPassword $OSPassword
   }
@@ -83,6 +83,6 @@ ForEach ($VMName in $VMs) {
     }
 
     # Cleaning garbage
-    $Delete = Invoke-VMScript -VM $VM -ScriptText "rm -rf /tmp/arctemp/" -GuestUser $OSAdmin -GuestPassword $OSPassword
+    #$Delete = Invoke-VMScript -VM $VM -ScriptText "rm -rf /tmp/arctemp/" -GuestUser $OSAdmin -GuestPassword $OSPassword
   }
 }
