@@ -28,12 +28,12 @@ param(
 $srcPath = "C:\arcOnboarding\"
 # Create vars.sh filefor Linux VMs
 Set-Content -Path .\vars.sh -Value "#!/bin/sh"
-Add-Content -Path .\vars.sh -Value "export subscription_id=$subscriptionId"
-Add-Content -Path .\vars.sh -Value "export client_id=$servicePrincipalClientId"
-Add-Content -Path .\vars.sh -Value "export client_secret=$servicePrincipalSecret"
-Add-Content -Path .\vars.sh -Value "export tenant_id=$tenantId"
-Add-Content -Path .\vars.sh -Value "export resourceGroup=$resourceGroup"
-Add-Content -Path .\vars.sh -Value "export location=$location"
+Add-Content -Path .\vars.sh -Value "export subscription_id=$subscriptionId`n" -NoNewLine
+Add-Content -Path .\vars.sh -Value "export client_id=$servicePrincipalClientId`n" -NoNewLine
+Add-Content -Path .\vars.sh -Value "export client_secret=$servicePrincipalSecret`n" -NoNewLine
+Add-Content -Path .\vars.sh -Value "export tenant_id=$tenantId`n" -NoNewLine
+Add-Content -Path .\vars.sh -Value "export resourceGroup=$resourceGroup`n" -NoNewLine
+Add-Content -Path .\vars.sh -Value "export location=$location" -NoNewLine
 
 # Connect to VMware vCenter
 Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false
