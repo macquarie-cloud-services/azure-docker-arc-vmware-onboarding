@@ -27,10 +27,7 @@ param(
 
 $srcPath = "C:\arcOnboarding\"
 # Create vars.sh filefor Linux VMs
-Set-Content -Path .\vars.sh -Value{
-#!/bin/sh
-# Azure vars
-}
+Set-Content -Path .\vars.sh -Value "#!/bin/sh"
 Add-Content -Path .\vars.sh -Value "export subscription_id=$subscriptionId"
 Add-Content -Path .\vars.sh -Value "export client_id=$servicePrincipalClientId"
 Add-Content -Path .\vars.sh -Value "export client_secret=$servicePrincipalSecret"
