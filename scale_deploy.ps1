@@ -25,6 +25,8 @@ param(
     [string] $OSPassword
 )
 
+$srcPath = "C:\arcOnboarding\"
+
 # Connect to VMware vCenter
 Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false
 Connect-VIServer -Server $vCenterAddress -User $vCenterUser -Password $vCenterPassword -Force
@@ -35,7 +37,6 @@ ForEach ($VMName in $VMs) {
   If ($VM.GuestId -match "windows") {
     # Define scripts information
     $File1 = "install_arc_agent.ps1"
-    $srcPath = "C:\arcOnboarding\"
     $DstPath = "C:\arctemp\"
     $Fullpath1 = $srcPath + $File1
 
