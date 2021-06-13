@@ -19,6 +19,8 @@ param(
     [string] $vCenterPassword,
     [Parameter(Mandatory = $true)]
     [string] $VMFolder,
+    [Parameter(Mandatory = $false)]
+    [string] $VMName,
     [Parameter(Mandatory = $true)]
     [string] $OSAdmin,
     [Parameter(Mandatory = $true)]
@@ -26,7 +28,7 @@ param(
 )
 
 $srcPath = "C:\arcOnboarding\"
-# Create vars.sh filefor Linux VMs
+# Create vars.sh file for Linux VMs
 Set-Content -Path .\vars.sh -Value "#!/bin/sh"
 Add-Content -Path .\vars.sh -Value "export subscription_id=$subscriptionId`n" -NoNewLine
 Add-Content -Path .\vars.sh -Value "export client_id=$servicePrincipalClientId`n" -NoNewLine
@@ -38,7 +40,15 @@ Add-Content -Path .\vars.sh -Value "export location=$location" -NoNewLine
 # Connect to VMware vCenter
 Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false
 Connect-VIServer -Server $vCenterAddress -User $vCenterUser -Password $vCenterPassword -Force
-$VMs = Get-Folder -Name $VMFolder | Get-VM
+
+If ($VMName) {
+  Write-Output "`nGetting information for VM $VMName ..." 
+  $VMs = Get-VM $VMName -ErrorAction Stop
+}
+Else {
+  Write-Output "`nVM name not specified. Getting all VMs in VM Folder $VMFolder .."
+  $VMs = Get-Folder -Name $VMFolder | Get-VM -ErrorAction Stop
+}
 
 ForEach ($VMName in $VMs) {
   $VM = Get-VM $VMName
